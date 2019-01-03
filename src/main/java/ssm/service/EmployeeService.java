@@ -1,95 +1,55 @@
 package ssm.service;
 
+import ssm.bean.Employee;
+
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+/**
+ * @Author: szwei
+ * @date : 2019/1/2 20:59
+ */
+public interface EmployeeService {
+    /**
+     * 得到所有列表
+     * @return
+     */
+    List<Employee> getALL();
 
-import ssm.bean.Employee;
-import ssm.bean.EmployeeExample;
-import ssm.bean.EmployeeExample.Criteria;
-import ssm.dao.EmployeeMapper;
+    /**
+     * 保存
+     * @param employee
+     */
+    void saveEmp(Employee employee);
 
-@Service
-public class EmployeeService {
-	
-	@Autowired
-	private EmployeeMapper employeeMapper;
-	
-	/**
-	 * 显示员工列表
-	 * @return
-	 */
-	public List<Employee> getALL() {
-		return employeeMapper.selectByExampleWithDept(null);
-	}
+    /**
+     * 检查用户名是否合法
+     * @param empName
+     * @return
+     */
+    boolean checkUser(String empName);
 
-	/**
-	 * 员工保存
-	 * @param employee
-	 */
-	public void saveEmp(Employee employee) {
-		employeeMapper.insertSelective(employee);
-			
-	}
+    /**
+     * 根据id查询员工
+     * @param id
+     * @return
+     */
+    Employee getEmp(Integer id);
 
-	/**
-	 * 校验用户名是否可用
-	 * @param empName count==0 可用，否则不可用
-	 * @return
-	 */
-	public boolean checkUser(String empName) {
-		// TODO Auto-generated method stub
-		EmployeeExample example = new EmployeeExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andEmpNameEqualTo(empName);
-		long count = employeeMapper.countByExample(example);
-		return count == 0;
-	}
+    /**
+     * 更新
+     * @param employee
+     */
+    void updateEmp(Employee employee);
 
-	/**
-	 * 
-	 * 按照员工id查询
-	 * @param id
-	 * @return
-	 */
-	public Employee getEmp(Integer id) {
-		// TODO Auto-generated method stub
-		Employee employee = employeeMapper.selectByPrimaryKeyWithDept(id);
-		return employee;
-	}
+    /**
+     * 删除
+     * @param id
+     */
+    void deleteEmp(Integer id);
 
-	/**
-	 * 员工更新
-	 * @param employee
-	 */
-	public void updateEmp(Employee employee) {
-		// TODO Auto-generated method stub
-		employeeMapper.updateByPrimaryKeySelective(employee);
-	}
-
-	/**
-	 * 删除单个员工
-	 * @param id
-	 */
-	public void deleteEmp(Integer id) {
-		// TODO Auto-generated method stub
-		employeeMapper.deleteByPrimaryKey(id);
-		
-	}
-
-	/**
-	 * 批量删除员工
-	 * @param ids
-	 */
-	public void deleteBatch(List<Integer> ids) {
-		// TODO Auto-generated method stub
-		EmployeeExample example = new EmployeeExample();
-		Criteria criteria = example.createCriteria();
-		//delete from xxx where id in(ids)
-		criteria.andEmpIdIn(ids);
-		employeeMapper.deleteByExample(example);
-	}
-	
-	
+    /**
+     * 批量删除
+     * @param ids
+     */
+    void deleteBatch(List<Integer> ids);
 }

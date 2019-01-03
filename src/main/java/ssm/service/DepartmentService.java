@@ -1,24 +1,17 @@
 package ssm.service;
 
+import ssm.bean.Department;
+
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import ssm.bean.Department;
-import ssm.dao.DepartmentMapper;
-
-@Service
-public class DepartmentService {
-	
-	@Autowired
-	private DepartmentMapper departmentMapper;
-	
-	/**
-	 * 查询所有部门
-	 * @return
-	 */
-	public List<Department> getDepts(){
-		return departmentMapper.selectByExample(null);
-	}
+/**
+ * @Author: szwei
+ * @date : 2019/1/2 21:00
+ */
+public interface DepartmentService {
+    /**
+     * 得到所有的部门
+     * @return
+     */
+    List<Department> getDepts();
 }

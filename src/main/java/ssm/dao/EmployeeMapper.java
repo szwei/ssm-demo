@@ -19,11 +19,6 @@ public interface EmployeeMapper {
     List<Employee> selectByExample(EmployeeExample example);
 
     Employee selectByPrimaryKey(Integer empId);
-    
-    //在查询的时候把部门信息查询出来
-    List<Employee> selectByExampleWithDept(EmployeeExample example);
-
-    Employee selectByPrimaryKeyWithDept(Integer empId);
 
     int updateByExampleSelective(@Param("record") Employee record, @Param("example") EmployeeExample example);
 
