@@ -7,6 +7,7 @@ import ssm.bean.EmployeeExample;
 import ssm.bean.EmployeeExample.Criteria;
 import ssm.dao.EmployeeMapper;
 import ssm.mapper.EmployeeMapperExt;
+import ssm.service.DepartmentService;
 import ssm.service.EmployeeService;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeMapper employeeMapper;
 	@Autowired
 	private EmployeeMapperExt employeeMapperExt;
+	@Autowired
+	private DepartmentService departmentService;
 	
 	/**
 	 * 显示员工列表
@@ -35,6 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void saveEmp(Employee employee) {
 		employeeMapper.insertSelective(employee);
+		departmentService.addDeptNum(employee.getDepartment().getDeptId()+"");
 			
 	}
 
@@ -70,7 +74,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 */
 	@Override
 	public void updateEmp(Employee employee) {
-		employeeMapper.updateByPrimaryKeySelective(employee);
+        Employee oldEmployee = employeeMapper.selectByPrimaryKey(employee.getEmpId());
+        String oldDeptId = oldEmployee.getdId()+"";
+        String newDeptId = employee.getdId()+"";
+        if(!oldDeptId.equals(newDeptId)){
+            departmentService.addDeptNum(newDeptId);
+        }
+        employeeMapper.updateByPrimaryKeySelective(employee);
 	}
 
 	/**
@@ -79,8 +89,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 */
 	@Override
 	public void deleteEmp(Integer id) {
-		employeeMapper.deleteByPrimaryKey(id);
-		
+        Employee employee = employeeMapper.selectByPrimaryKey(id);
+        employeeMapper.deleteByPrimaryKey(id);
+        departmentService.reduceDeptNum(employee.getdId()+"");
 	}
 
 	/**
@@ -90,11 +101,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void deleteBatch(List<Integer> ids) {
 		EmployeeExample example = new EmployeeExample();
-		Criteria criteria = example.createCriteria();
-		//delete from xxx where id in(ids)
-		criteria.andEmpIdIn(ids);
-		employeeMapper.deleteByExample(example);
-	}
+        Criteria criteria = example.createCriteria();
+        //delete from xxx where id in(ids)
+        criteria.andEmpIdIn(ids);
+        employeeMapper.deleteByExample(example);
+        for(Integer id:ids){
+            Employee employee = employeeMapper.selectByPrimaryKey(id);
+            departmentService.reduceDeptNum(employee.getdId()+"");
+        }
+    }
 	
 	
 }

@@ -1,7 +1,5 @@
 package ssm.bean;
 
-import ssm.bean.Department;
-
 import javax.validation.constraints.Pattern;
 
 

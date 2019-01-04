@@ -1,6 +1,3 @@
-/*
-package ssm.test;
-
 import java.util.List;
 
 import org.junit.Before;
@@ -21,13 +18,12 @@ import ssm.bean.Employee;
 
 import com.github.pagehelper.PageInfo;
 
-*/
 /**
  * 使用Spring测试模块提供的测试请求,测试CRUD 的正确性
  * 使用@WebAppConfiguration注解可以@Autowire Spring 容器自己的类
  * @author szw
  *
- *//*
+ */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -70,4 +66,3 @@ public class MvcTest {
 	}
 	
 }
-*/

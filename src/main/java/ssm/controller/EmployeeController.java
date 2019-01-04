@@ -1,28 +1,21 @@
 package ssm.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.*;
 import ssm.bean.Employee;
 import ssm.bean.Msg;
 import ssm.service.EmployeeService;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 处理员工CRUD 请求
@@ -89,7 +82,6 @@ public class EmployeeController {
 	@ResponseBody
 	@RequestMapping(value="/emp/{id}",method=RequestMethod.GET)
 	public Msg getEmp(@PathVariable("id")Integer id) {
-		
 		Employee employee = employeeService.getEmp(id);
 		return Msg.success().add("emp", employee);
 	}
