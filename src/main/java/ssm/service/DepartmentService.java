@@ -48,4 +48,16 @@ public interface DepartmentService {
      * @param department
      */
     void saveDept(Department department);
+
+    /**
+     * 部门删除
+     * @param parseInt
+     */
+    void deleteEmp(int parseInt);
+
+    /**
+     * 部门更新
+     * @param department
+     */
+    void updateDept(Department department);
 }

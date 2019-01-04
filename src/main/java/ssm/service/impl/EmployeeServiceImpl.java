@@ -38,7 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void saveEmp(Employee employee) {
 		employeeMapper.insertSelective(employee);
-		departmentService.addDeptNum(employee.getDepartment().getDeptId()+"");
+		departmentService.addDeptNum(employee.getdId()+"");
 			
 	}
 

@@ -79,10 +79,43 @@ public class DepartmentController {
      */
     @RequestMapping(value = "/dept", method = RequestMethod.POST)
     @ResponseBody
-    public Msg saveEmps(@Valid Department department) {
+    public Msg saveEmps(Department department) {
         departmentService.saveDept(department);
         return Msg.success();
     }
 
+    /**
+     * 部门删除
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/dept/{id}", method = RequestMethod.DELETE)
+    public Msg deleteEmpById(@PathVariable("id") String id) {
+        try {
+            int deptNum = Integer.parseInt(departmentService.getDeptNum(id));
+            //如果该部门员工数量不为0，不可删除
+            if(deptNum != 0){
+                return Msg.fail();
+            }
+            departmentService.deleteEmp(Integer.parseInt(id));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return Msg.success();
+    }
+
+
+    /**
+     * 更新部门信息
+     * @param department
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/dept/{deptId}",method=RequestMethod.PUT)
+    public Msg saveEmp(@Valid Department department) {
+            departmentService.updateDept(department);
+            return Msg.success();
+    }
 
 }

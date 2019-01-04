@@ -43,7 +43,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">部门名称</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" name="" id="deptName_update_input">
+							<input type="text" class="form-control" name="deptName" id="deptName_update_input">
 							<span class="help-block"></span>
 						</div>
 					</div>
@@ -112,9 +112,6 @@
 				<table class="table table-hover table-striped" id="depts_table">
 					<thead>
 					<tr>
-						<th>
-							<input type="checkbox" id="check_all"/>
-						</th>
 						<th>#</th>
 						<th>部门编号</th>
 						<th>部门名称</th>
@@ -173,7 +170,6 @@
         var i = result.extend.pageInfo.startRow;
         $.each(depts, function (index, item) {
             //alert(item.empName);
-            var checkBoxTd = $("<td><input type='checkbox' class='check_item'/></td>");
             var numTd = $("<td></td>").append(i++);
             var deptIdTd = $("<td></td>").append(item.deptId);
             var deptNameTd = $("<td></td>").append(item.deptName);
@@ -189,8 +185,7 @@
             delBtu.attr("delete-id", item.deptId);
             var btuTd = $("<td></td>").append(editBtu).append(" ").append(delBtu);
             //append方法执行完后仍返回原来的元素
-            $("<tr></tr>").append(checkBoxTd)
-                .append(numTd)
+            $("<tr></tr>").append(numTd)
                 .append(deptIdTd)
                 .append(deptNameTd)
                 .append(deptNumTd)
@@ -286,34 +281,22 @@
         //1.弹出是否确认删除对话框
         //获取empName的方法，获取到他的所有的父元素，找到tr,然后再在tr中找到第一个td,获取到第一个td的值
         var deptName = $(this).parents("tr").find("td:eq(2)").text();
-        alert(deptName);
         if (confirm("确认删除【" + deptName + "】吗？")) {
             //确认，发送ajax请求，删除
             $.ajax({
-                url: "${APP_PATH}/emp/" + $(this).attr("delete-id"),
+                url: "${APP_PATH}/dept/" + $(this).attr("delete-id"),
                 type: "DELETE",
                 success: function (result) {
-                    alert(result.msg);
+                    if(result.code == 200){
+                        alert("该部门员工数量不为空，不可删除！");
+                    }else{
+                        alert(result.msg);
+                    }
                     //回到当前页
                     to_page(currentPage);
                 }
             });
         }
-    });
-
-    //完成全选/全不选功能
-    $("#check_all").click(function () {
-        //prop修改和读取原生dom属性的值
-        //attr获取自定义属性的值
-        $(".check_item").prop("checked", $(this).prop("checked"));
-    });
-
-    //单个的选择框全选，顶上的也选择
-    $(document).on("click", ".check_item", function () {
-        //判断当前选中的元素是否是全部的元素
-        var flag = ($(".check_item:checked").length == $(".check_item").length)
-        $("#check_all").prop("checked", flag);
-
     });
 
     //为编辑按钮绑定事件
@@ -358,7 +341,7 @@
             data: $("#deptAddModal form").serialize(),
             success: function (result) {
                 if (result.code == 100) {
-                    //alert(result.msg);
+                    alert(result.msg);
                     //员工保存成功
                     //1.关闭模态框
                     $("#deptAddModal").modal('hide');
@@ -371,6 +354,26 @@
             }
         });
     });
+
+    //点击更新，更新员工信息
+    $("#dept_update_btu").click(function () {
+            //发送ajax请求，更新员工信息
+            $.ajax({
+                url: "${APP_PATH}/dept/" + $(this).attr("edit-id"),
+                type: "PUT",
+                data: $("#deptUpdateModal form").serialize(),
+                success: function (result) {
+                    //alert(result.msg);
+                    if (result.code == 100) {
+                        //1.关闭模态框
+                        $("#deptUpdateModal").modal('hide');
+                        //2.回到当前页面
+                        to_page(currentPage);
+                    }
+                }
+            });
+    });
+
 </script>
 </body>
 </html>
