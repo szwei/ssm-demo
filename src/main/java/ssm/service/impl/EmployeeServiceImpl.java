@@ -100,15 +100,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 */
 	@Override
 	public void deleteBatch(List<Integer> ids) {
+		for(Integer id:ids){
+			Employee employee = employeeMapper.selectByPrimaryKey(id);
+			departmentService.reduceDeptNum(employee.getdId()+"");
+		}
 		EmployeeExample example = new EmployeeExample();
-        Criteria criteria = example.createCriteria();
-        //delete from xxx where id in(ids)
-        criteria.andEmpIdIn(ids);
-        employeeMapper.deleteByExample(example);
-        for(Integer id:ids){
-            Employee employee = employeeMapper.selectByPrimaryKey(id);
-            departmentService.reduceDeptNum(employee.getdId()+"");
-        }
+		Criteria criteria = example.createCriteria();
+		//delete from xxx where id in(ids)
+		criteria.andEmpIdIn(ids);
+		employeeMapper.deleteByExample(example);
     }
 	
 	

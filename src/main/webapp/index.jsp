@@ -589,7 +589,7 @@
         var delidstr = "";
         $.each($(".check_item:checked"), function () {
             empNames += $(this).parents("tr").find("td:eq(2)").text() + ",";
-            delidstr += $(this).parents("tr").find("td:eq(1)").text() + "-";
+            delidstr += $(this).parents("tr").find("td:eq(2)").text() + "-";
         });
         //alert(delidstr);
         //去除empNames多余的，
